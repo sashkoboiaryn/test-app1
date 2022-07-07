@@ -3,7 +3,7 @@ export interface IUser {
   name: string,
   username: string,
   email: string,
-  /* address: {
+  address: {
     street: string,
     suite: string,
     city: string,
@@ -19,15 +19,13 @@ export interface IUser {
     name: string,
     catchPhrase: string,
     bs: string
-} */}
+}}
 
 
-export interface IPost {
-    
+export interface IPost {   
     userId: number;
     id: number;
     title: string;
-    body: string;
-   
+    body: string;  
 }
 

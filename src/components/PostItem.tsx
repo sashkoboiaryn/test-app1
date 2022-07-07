@@ -17,8 +17,7 @@ const PostItem: React.FC<PostItemProps> = ({post}) => {
     return(
         
       <Card className='post-card' variant="outlined" sx={{bgcolor: lightBlue[50]}}>
-        <CardHeader
-            
+        <CardHeader            
           title={post.title}
         />
         <CardContent>

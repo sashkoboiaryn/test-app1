@@ -1,6 +1,8 @@
 import Posts from "./Posts";
 import React, { useState, useEffect } from "react";
 import {IPost, IUser} from '../types/Types';
+import ApiService from "../service/ApiService";
+import useGlobalState from "../state/State";
 import {Box} from "@mui/material";
 import axios from "axios";
 import MenuAppBar from "../components/AppBar";
@@ -12,26 +14,29 @@ import Profile from "../components/Profile";
 const App: React.FC = () => {
 
   // SHOW POSTS
-  const [posts1, setPosts] = useState<IPost[]>([])
-  
-  useEffect(() => {
-    fetchPosts()
-    /* fetchUser() */
-    console.log('effect') 
-    console.log(posts1);
-          
-  },[])
-  
-    async function fetchPosts() {
-      try{
-        let responce = await axios.get<IPost[]>('https://jsonplaceholder.typicode.com/posts')
-        setPosts(responce.data);  
-              
-      }
-      catch (e) {
-        alert(e)
-      }
+  const [posts, setPosts] = useGlobalState('posts');
+  const [localPosts, setLocalPosts] = useGlobalState('localPosts');
+  const [user, setUser] = useGlobalState('user');
+
+
+  const [active, setActive] = useState(false) 
+  useEffect(() => { 
+    if (posts.length === 0) {      
+    ApiService.fetchPosts().then((res => setPosts(res!))); 
+
+    if (localStorage.getItem("posts")) {
+      setLocalPosts(JSON.parse(localStorage.getItem("posts") || "") as Array<IPost>);
     }
+
+    if (localPosts.length) {
+      setPosts(posts.concat(localPosts));
+    }}                
+  },[]);
+
+  useEffect(() => {
+    localStorage.setItem("posts", JSON.stringify(localPosts));
+  }, [localPosts])
+  
 
   const addPost = ( title: string,body: string) => {
     const newPost: IPost = {
@@ -41,39 +46,32 @@ const App: React.FC = () => {
       body: body,
       
     }    
-    setPosts(prev => [newPost, ...prev]);  
-  }
-   // SHOW USERDATA
-  const [user, setUser] = useState<IUser>()
-     
-  
+    setPosts(prev => [newPost, ...prev]); 
+    setLocalPosts(prev => [newPost, ...prev]); 
+  };
+
+   // SHOW USERDATA  
   useEffect(() => {
-    fetchUser()
-    console.log('effect2')
-    console.log(user);
-       
-  },[])
-      async function fetchUser() {
-        try{
-        const responceUser = await axios.get<IUser>('https://jsonplaceholder.typicode.com/users/1')
-        setUser(responceUser.data); 
-        }
-        catch (e) {
-          alert(e)
-        }                 
-    }
+    ApiService.fetchUser().then((res => setUser(res)));      
+  },[]);
+ 
     
   return (
-    <>    
-    <MenuAppBar />    
+    <>      
     <Profile     
     userdata={user}
+    isActive={active}
+    setIsActive={setActive}
     />
+    <MenuAppBar
+    setIsActive={setActive}
+    /> 
     <PostForm 
       onAdd={addPost}
      />
     <Posts 
-      posts={posts1}/>    
+      localPosts={localPosts}
+      posts={posts}/>    
     </>
   )
 }

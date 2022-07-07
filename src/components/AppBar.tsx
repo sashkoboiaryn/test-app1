@@ -1,12 +1,15 @@
-import * as React from 'react';
+/* import * as React from 'react'; */
+import React from 'react';
 import {AppBar, Box, Toolbar, Typography, IconButton ,MenuItem, Menu} from '@mui/material/';
 
 import  AccountCircle from '@mui/icons-material/AccountCircle';
 import Profile from './Profile';
 
+interface MenuProps { 
+  setIsActive: (active: boolean) => void;    
+}
 
-
-export default function MenuAppBar() {
+const MenuAppBar: React.FC<MenuProps> = (props) => {
   
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   
@@ -16,7 +19,8 @@ export default function MenuAppBar() {
   };
 
   const showProfile = () => {
-    console.log("profile")
+    console.log("profile");
+    props.setIsActive(true);
     setAnchorEl(null);
   }
 
@@ -29,7 +33,7 @@ export default function MenuAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>         
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
             Test-App
           </Typography>
           
@@ -59,8 +63,8 @@ export default function MenuAppBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem href='#' onClick={showProfile}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={showProfile}>Profile</MenuItem>
+                <MenuItem onClick={showProfile}>My account</MenuItem>
               </Menu>
             </div>
           
@@ -69,3 +73,5 @@ export default function MenuAppBar() {
     </Box>
   );
 }
+
+export default MenuAppBar;

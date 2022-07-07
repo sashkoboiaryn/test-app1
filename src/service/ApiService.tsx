@@ -1,28 +1,33 @@
-import { IPost } from "../types/Types";
+import { IPost, IUser } from "../types/Types";
 import React, {useState, useEffect} from 'react'; 
 import axios from "axios";
 
-
-
-    const [posts1, setPosts] = useState<IPost[]>([])
-
-    useEffect(() => {
-
-        fetchUsers()
-        console.log('effect')
-        
-    },[])
-    console.log(posts1)
-    
-    
-    async function fetchUsers() {
+class ApiService {
+   
+    static async fetchPosts() {
         try{
-        const responce = await axios.get<IPost[]>('https://jsonplaceholder.typicode.com/posts')
-        setPosts(responce.data);
-        
-        }
+        let responce = await axios.get<IPost[]>('https://jsonplaceholder.typicode.com/posts');
+            return (responce.data);        
+        } 
         catch (e) {
-        alert(e)
+            alert(e)
         }
+
+    };
+
+    static async fetchUser() {
+        try{
+        let responceUser = await axios.get<IUser>('https://jsonplaceholder.typicode.com/users/1');
+            return (responceUser.data);        
+        } 
+        catch (e) {
+            alert(e)
+        }
+
     }
+}
+
+
+
+export default ApiService;
     

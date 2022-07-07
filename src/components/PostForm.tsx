@@ -45,6 +45,7 @@ export const PostForm: React.FC<PostFormProps> = props => {
                 onChange={(e) => setTitleValue(e.target.value)}
             />
             <TextField 
+                
                 label="Enter text..." variant="filled"
                 ref={bodyRef}
                 type='text'
@@ -53,7 +54,7 @@ export const PostForm: React.FC<PostFormProps> = props => {
                 placeholder="Enter something..."
                 onChange={(e) => setBodyValue(e.target.value)}
             />
-            <Button 
+            <Button sx={{minHeight: 60}}
                 variant="text"
                 onClick={addHandler}
             >Add New Post</Button>
