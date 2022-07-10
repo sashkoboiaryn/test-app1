@@ -5,7 +5,7 @@ import { createGlobalState } from "react-hooks-global-state";
 
 const initialState = { 
     posts: Array<IPost>(), 
-    user: Object({
+    user: {
         id: 0 ,
         name: 'string',
         username: 'string',
@@ -26,9 +26,9 @@ const initialState = {
           name: 'string',
           catchPhrase: 'string',
           bs: 'string'
-      }}),
+      }},
     localPosts: Array<IPost>(),
-    localUser: Object(),   
+       
 };
 const { useGlobalState } = createGlobalState(initialState);
 

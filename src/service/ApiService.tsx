@@ -1,5 +1,4 @@
 import { IPost, IUser } from "../types/Types";
-import React, {useState, useEffect} from 'react'; 
 import axios from "axios";
 
 class ApiService {
@@ -11,8 +10,7 @@ class ApiService {
         } 
         catch (e) {
             alert(e)
-        }
-
+        };
     };
 
     static async fetchUser() {
@@ -22,9 +20,8 @@ class ApiService {
         } 
         catch (e) {
             alert(e)
-        }
-
-    }
+        };
+    };
 }
 
 
