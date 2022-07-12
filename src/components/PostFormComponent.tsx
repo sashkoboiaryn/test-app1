@@ -1,63 +1,88 @@
-import { Box, TextField, Button, Typography, Card } from "@mui/material";
-import React, {useState, useRef} from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
+import React, { useState } from "react";
+import useGlobalState from "../state/State";
+import { IPost } from "../types/Types";
 
+export const PostForm: React.FC = () => {
+  const [titleValue, setTitleValue] = useState("");
+  const [bodyValue, setBodyValue] = useState("");
+  const [, setLocalPosts] = useGlobalState("localPosts");
 
-interface PostFormProps {
-    onAdd(title: string, body: string): void;      
-}
+  const addPost = () => {
+    const newPost: IPost = {
+      userId: 11,
+      id: Date.now(),
+      title: titleValue,
+      body: bodyValue,
+    };
+    if (titleValue && bodyValue !== "") {
+      setLocalPosts((prev) => [newPost, ...prev]);
+      setTitleValue("");
+      setBodyValue("");
+      setOpen(false);
+    } else alert("Enter something...");
+  };
 
-export const PostForm: React.FC<PostFormProps> = props => {
+  const [open, setOpen] = React.useState(false);
 
-    const titleRef = useRef<HTMLInputElement>(null)
-    const bodyRef = useRef<HTMLInputElement>(null)
-    const [titleValue, setTitleValue] = useState('')
-    const [bodyValue, setBodyValue] = useState('')
-    
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-    const addHandler = (event: React.MouseEvent) => {
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-        if (titleValue && bodyValue !== '') {        
-            props.onAdd(titleValue,bodyValue);        
-            setTitleValue(titleValue);
-            setBodyValue(bodyValue);
-            setTitleValue('');
-            setBodyValue('');
-        }
-        else (
-            alert('Enter something...')           
-        );
-    }
-
-    return (
-        <Box sx={{m: 5, display: 'grid', justifyContent: 'center'  }} >
-            <Typography variant='h6' >
-                Enter new post
-            </Typography>
-            <Card sx={{p:1}}>
-                <TextField 
-                    label="Enter title..." variant="outlined"
-                    ref={titleRef}
-                    type='text'
-                    id='title' 
-                    value={titleValue}
-                    placeholder="Enter something..."
-                    onChange={(e) => setTitleValue(e.target.value)}
-                />
-                <TextField 
-                    
-                    label="Enter text..." variant="filled"
-                    ref={bodyRef}
-                    type='text'
-                    id='body' 
-                    value={bodyValue}
-                    placeholder="Enter something..."
-                    onChange={(e) => setBodyValue(e.target.value)}
-                />
-                <Button sx={{minHeight: 56}}
-                    variant="text"
-                    onClick={addHandler}
-                >Add New Post</Button>
-                </Card>
-        </Box>
-    );
-}
+  return (
+    <Box
+      sx={{ mb: -6, display: "grid", justifyContent: "flex-end", zIndex: 2 }}
+    >
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Add new post
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add new post</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Here you may write your post</DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="title"
+            label="Enter title..."
+            type="text"
+            fullWidth
+            variant="standard"
+            value={titleValue}
+            placeholder="Enter something..."
+            onChange={(e) => setTitleValue(e.target.value)}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="body"
+            label="Write post..."
+            type="text"
+            fullWidth
+            variant="standard"
+            value={bodyValue}
+            placeholder="Enter something..."
+            onChange={(e) => setBodyValue(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={addPost}>Add</Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
+};
