@@ -18,17 +18,17 @@ const MenuAppBar: React.FC = () => {
             </Link>
           </Typography>
           <div>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <Link className="menuLink" to="profile">
+            <Link className="menuLink" to="profile">
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+              >
                 <AccountCircle />
-              </Link>
-            </IconButton>
+              </IconButton>
+            </Link>
           </div>
         </Toolbar>
       </AppBar>
