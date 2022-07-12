@@ -8,7 +8,7 @@ const Profile: React.FC = () => {
   const [user, setUser] = useGlobalState("user");
 
   useEffect(() => {
-    ApiService.fetchUser().then((res) => setUser(res!));
+    ApiService.fetchUser().then((res) => setUser(res));
   }, []);
 
   return (

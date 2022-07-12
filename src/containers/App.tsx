@@ -15,7 +15,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (posts.length === 0) {
-      ApiService.fetchPosts().then((res) => setPosts(res!));
+      ApiService.fetchPosts().then((res) => setPosts(res));
 
       if (localStorage.getItem("posts")) {
         setLocalPosts(
